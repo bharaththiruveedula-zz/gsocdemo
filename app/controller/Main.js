@@ -34,12 +34,13 @@ Ext.define('gsocdemo.controller.Main',{
                         "age":offlinedata.age,
                         "gender":offlinedata.gender
                 };
-                sendData(parsedData);
+                sendData(parsedData,true);
             }
             var offlinestore = Ext.create('Ext.data.Store',{
                 model: 'gsocdemo.model.Main',
             }); 
             offlinestore.getProxy().clear();
+            Ext.Msg.alert("Your data is syncing");
         };
 
         setInterval("check()",10000);
@@ -59,7 +60,7 @@ Ext.define('gsocdemo.controller.Main',{
                         "gender":gender
                     };
                     if(gsocdemo.app.online === true) {
-                        sendData(data);
+                        sendData(data,false);
                     }
                     else{
                         var offlinestore = Ext.create('Ext.data.Store',{
@@ -72,7 +73,7 @@ Ext.define('gsocdemo.controller.Main',{
                 }
             }
         });
-        sendData= function(data) {
+        sendData= function(data,sync) {
             var data = JSON.stringify(data);
             console.log(data);
             Ext.Ajax.request({
@@ -85,7 +86,8 @@ Ext.define('gsocdemo.controller.Main',{
                 },
                 params: data,
                 success: function(response) {
-                    console.log("great");
+                    if(sync==false)
+                        Ext.Msg.alert("Successfully registered");
                 },
                 failure: function(a){
                     console.log("No");

@@ -1,5 +1,8 @@
 Ext.define('gsocdemo.view.Viewport',{
     extend: 'Ext.form.Panel',
+    requires:[
+        'Ext.MessageBox'
+    ],
     config:{
         layout: {
             type: 'vbox'
