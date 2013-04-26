@@ -88,6 +88,39 @@ Ext.define('gsocdemo.controller.Main',{
                 success: function(response) {
                     if(sync==false)
                         Ext.Msg.alert("Successfully registered");
+                        var uuid = JSON.parse(response.responseText).uuid;
+                        console.log(uuid);
+                        a= new Date();
+                        date  = a.getFullYear()+"-"+(a.getMonth()+1)+"-"+a.getDate()+"T"+a.getHours()+":"+a.getMinutes()+":"+a.getSeconds()+"Z";
+                        encounterdata ={
+                        encounterDatetime: date,
+                        encounterType: "raxa00000-0000-0000-0000-000000000001",
+                        location: "Registration Desk",
+                        obs:[{
+                            concept: "raxa00000-0000-0000-0000-000000000029",
+                            obsDatetime: date,
+                            person: response.uuid,
+                            value: 10
+                        }],
+                        patient:uuid
+                    }; 
+                    
+                    var encounterjsondata = JSON.stringify(encounterdata);
+                    Ext.Ajax.request({
+                        url: 'http://raxa.io:8080/openmrs/ws/rest/v1/raxacore/encounter',
+                        useDefaultXhrHeader: false,
+                        headers: {
+                            "Authorization" : "Basic YmhhcmF0aDpIZWxsbzEyMw==",
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        params: encounterjsondata,
+                        success:  function(r){
+                            Ext.Msg.alert("Encounter for "+JSON.parse(r.responseText).patient.display+" registered");
+                        },
+                        failure: function(a){
+                        }
+                    });  
                 },
                 failure: function(a){
                     console.log("No");
