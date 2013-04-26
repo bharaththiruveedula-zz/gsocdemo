@@ -80,7 +80,7 @@ Ext.define('gsocdemo.controller.Main',{
                 url: 'http://raxa.io:8080/openmrs/ws/rest/v1/raxacore/patient',
                 useDefaultXhrHeader: false,
                 headers: {
-                    "Authorization" : "Basic YmhhcmF0aDpIZWxsbzEyMw==",
+                    "Authorization" : "Basic "+ window.btoa("bharath"+" "+"Hello123"),
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
